@@ -1,0 +1,48 @@
+# Render Backend Configuration
+
+# This file contains the configuration for deploying the Laravel backend to Render
+
+# Service configuration
+name: vicentech-backend
+type: web
+env: php
+plan: starter
+
+# Build configuration
+build_command: |
+  composer install --no-dev --optimize-autoloader
+  npm install
+  npm run build
+  php artisan key:generate --force
+  php artisan config:cache
+  php artisan route:cache
+  php artisan view:cache
+  php artisan migrate --force
+
+# Start command
+start_command: php artisan serve --host=0.0.0.0 --port=$PORT
+
+# Environment variables
+env_vars:
+  APP_ENV: production
+  APP_DEBUG: false
+  DB_CONNECTION: pgsql
+  CACHE_DRIVER: redis
+  SESSION_DRIVER: redis
+  QUEUE_CONNECTION: redis
+
+# Required services
+services:
+  - name: vicentech-postgres
+    type: postgresql
+    plan: starter
+  - name: vicentech-redis
+    type: redis
+    plan: starter
+
+# Health check
+health_check_path: /api/test-events
+
+# Auto-deploy settings
+auto_deploy: true
+branch: main

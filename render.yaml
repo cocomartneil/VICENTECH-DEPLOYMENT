@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: vicentech-backend
+    env: php
+    plan: starter
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader
+      npm install
+      npm run build
+      php artisan key:generate --force
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: DB_CONNECTION
+        value: postgresql
+      - key: CACHE_DRIVER
+        value: redis
+      - key: SESSION_DRIVER
+        value: redis
+      - key: QUEUE_CONNECTION
+        value: redis
+      - key: REDIS_HOST
+        fromDatabase:
+          name: vicentech-redis
+          property: host
+      - key: REDIS_PORT
+        fromDatabase:
+          name: vicentech-redis
+          property: port
+      - key: REDIS_PASSWORD
+        fromDatabase:
+          name: vicentech-redis
+          property: password
+
+databases:
+  - name: vicentech-postgres
+    plan: starter
+  - name: vicentech-redis
+    plan: starter

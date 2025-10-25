@@ -1,0 +1,29 @@
+# Render deployment configuration for Laravel backend
+# This file configures the backend deployment on Render
+
+# Build and deployment settings
+build_command: |
+  composer install --no-dev --optimize-autoloader
+  npm install
+  npm run build
+  php artisan key:generate --force
+  php artisan config:cache
+  php artisan route:cache
+  php artisan view:cache
+
+# Start command for the web service
+start_command: php artisan serve --host=0.0.0.0 --port=$PORT
+
+# Environment variables
+environment_variables:
+  APP_ENV: production
+  APP_DEBUG: false
+  DB_CONNECTION: postgresql
+  CACHE_DRIVER: redis
+  SESSION_DRIVER: redis
+  QUEUE_CONNECTION: redis
+
+# Required services
+services:
+  - postgresql
+  - redis
