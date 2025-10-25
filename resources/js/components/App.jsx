@@ -52,7 +52,7 @@ import SacramentHistory from '../pages/PARISHIONER/SacramentHistory';
 import DonationHistory from '../pages/PARISHIONER/DonationHistory';
 import ForgotPassword from '../pages/GUEST/ForgotPassword';
 import ResetPassword from '../pages/GUEST/ResetPassword';
-import ShrineRectorsAdmin from '../pages/admin/ShrineRectorsAdmin';
+import ShrineRectorsAdmin from '../pages/ADMIN/ShrineRectorsAdmin';
 import AdminMassSchedule from '../pages/ADMIN/AdminMassSchedule';
 import Calendar from '../pages/Calendar';
 import AdminAnalyticsReporting from '../pages/ADMIN/AdminAnalyticsReporting';
