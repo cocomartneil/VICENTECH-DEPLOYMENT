@@ -43,18 +43,9 @@ git push -u origin main
 2. Connect your GitHub repository: `cocomartneil/VICENTECH-DEPLOYMENT`
 3. Configure the service:
    - **Name**: `vicentech-backend`
-   - **Environment**: `PHP`
-   - **Build Command**: 
-     ```bash
-     composer install --no-dev --optimize-autoloader
-     npm install
-     npm run build
-     php artisan key:generate --force
-     php artisan config:cache
-     php artisan route:cache
-     php artisan view:cache
-     ```
-   - **Start Command**: `php artisan serve --host=0.0.0.0 --port=$PORT`
+   - **Environment**: `Docker`
+   - **Dockerfile Path**: `./Dockerfile`
+   - **Plan**: `Starter` (free tier)
 
 ### 2.3 Create Database Services
 1. **PostgreSQL Database**:
@@ -113,8 +104,13 @@ SANCTUM_STATEFUL_DOMAINS=your-frontend-domain.netlify.app
 
 ### 2.5 Deploy Backend
 1. Click "Create Web Service"
-2. Render will automatically build and deploy your backend
-3. Note the URL provided (e.g., `https://vicentech-backend.onrender.com`)
+2. Render will automatically build the Docker container and deploy your backend
+3. The Dockerfile will handle:
+   - Installing PHP 8.2 with required extensions
+   - Installing Composer and Node.js
+   - Installing dependencies and building assets
+   - Setting proper permissions
+4. Note the URL provided (e.g., `https://vicentech-backend.onrender.com`)
 
 ## Step 3: Deploy Frontend to Netlify
 
@@ -168,13 +164,20 @@ Update your frontend code to use the Render backend URL. Look for API base URLs 
 ## Step 5: Database Migration
 
 ### 5.1 Run Migrations
-You can run migrations through Render's shell or add them to your build command:
+The Dockerfile includes migration commands, but you can also run them manually:
 
 ```bash
-# Add to build command in Render
+# Through Render's shell or add to Dockerfile
 php artisan migrate --force
 php artisan db:seed --force
 ```
+
+### 5.2 Docker Configuration
+The Dockerfile includes:
+- PHP 8.2 with PostgreSQL, Redis, and other required extensions
+- Composer for PHP dependencies
+- Node.js and npm for frontend assets
+- Proper file permissions for Laravel
 
 ## Step 6: Custom Domain (Optional)
 
