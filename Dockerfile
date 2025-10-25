@@ -28,6 +28,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Install Node.js dependencies and build assets
+# Cache bust: 2025-10-25 - Fixed CSS import issues
 RUN npm install && npm run build
 
 # Set permissions
