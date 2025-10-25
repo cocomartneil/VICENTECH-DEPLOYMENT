@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../utils/axios';
-import '../../../css/give.css'; // Ensure custom CSS is imported
+import '../../../css/Give.css'; // Ensure custom CSS is imported
 
 // Define SVG Icons separately for better readability and to avoid parsing issues
 const ChurchBuildingIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 text-[#CD8B3E]"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 21v-4.719c0-.404.081-.81.294-1.168.524-.954 1.48-1.594 2.57-1.664v-1.921c0-.404.081-.81.294-1.168C12.48 9.594 13.436 8.954 14.526 8.884v-1.92c0-.404.081-.81.294-1.168C16.48 4.594 17.436 3.954 18.526 3.884V2.25M8.25 21h8.25m-4.5 0H3.375m8.25 0h7.5m-9-15 4.75 4.75M9 14.25l-4.75 4.75M17.25 14.25l-4.75 4.75M12 18V9" /></svg>;
