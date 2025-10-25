@@ -1,0 +1,19 @@
+# Frontend deployment configuration for Render
+# This file configures the React frontend deployment on Render
+
+# Build configuration
+build_command: npm install && npm run build
+
+# Start command for web service
+start_command: npx serve -s public -l $PORT
+
+# Environment variables
+environment_variables:
+  NODE_ENV: production
+  REACT_APP_API_URL: https://your-backend-url.onrender.com
+  REACT_APP_SANCTUM_STATEFUL_DOMAINS: your-frontend-url.onrender.com
+
+# Static site configuration (alternative)
+static_site_config:
+  build_command: npm install && npm run build
+  publish_directory: public

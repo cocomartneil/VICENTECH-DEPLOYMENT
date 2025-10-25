@@ -54,7 +54,7 @@ const AdminUsers = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:8000/sanctum/csrf-cookie', {
+    fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/sanctum/csrf-cookie`, {
       credentials: 'include'
     });
   }, []);

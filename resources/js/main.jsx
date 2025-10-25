@@ -7,7 +7,7 @@ import axios from 'axios';
 
 // Set default axios configuration
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Accept'] = 'application/json';
 
