@@ -22,23 +22,27 @@ return new class extends Migration
             $typeExists = $typeExists[0]->exists;
 
             if ($typeExists) {
-                // First, drop the default constraint
+                // First, drop the default and convert to text temporarily
                 DB::statement("ALTER TABLE users ALTER COLUMN membership_status DROP DEFAULT");
+                DB::statement("ALTER TABLE users ALTER COLUMN membership_status TYPE text");
                 
-                // Then create new type and convert
-                DB::statement("CREATE TYPE membership_status_enum_new AS ENUM ('active', 'inactive', 'visitor', 'new_member')");
-                DB::statement("ALTER TABLE users ALTER COLUMN membership_status TYPE membership_status_enum_new USING membership_status::text::membership_status_enum_new");
+                // Drop old enum type and create new one
                 DB::statement("DROP TYPE membership_status_enum");
-                DB::statement("ALTER TYPE membership_status_enum_new RENAME TO membership_status_enum");
+                DB::statement("CREATE TYPE membership_status_enum AS ENUM ('active', 'inactive', 'visitor', 'new_member')");
+                
+                // Convert column to new enum type
+                DB::statement("ALTER TABLE users ALTER COLUMN membership_status TYPE membership_status_enum USING membership_status::membership_status_enum");
                 
                 // Finally, set the new default
-                DB::statement("ALTER TABLE users ALTER COLUMN membership_status SET DEFAULT 'new_member'");
+                DB::statement("ALTER TABLE users ALTER COLUMN membership_status SET DEFAULT 'new_member'"::membership_status_enum);
             } else {
                 // If type doesn't exist, create it directly
-                DB::statement("CREATE TYPE membership_status_enum AS ENUM ('active', 'inactive', 'visitor', 'new_member')");
                 DB::statement("ALTER TABLE users ALTER COLUMN membership_status DROP DEFAULT");
-                DB::statement("ALTER TABLE users ALTER COLUMN membership_status TYPE membership_status_enum USING membership_status::text::membership_status_enum");
-                DB::statement("ALTER TABLE users ALTER COLUMN membership_status SET DEFAULT 'new_member'");
+                DB::statement("ALTER TABLE users ALTER COLUMN membership_status TYPE text");
+                
+                DB::statement("CREATE TYPE membership_status_enum AS ENUM ('active', 'inactive', 'visitor', 'new_member')");
+                DB::statement("ALTER TABLE users ALTER COLUMN membership_status TYPE membership_status_enum USING membership_status::membership_status_enum");
+                DB::statement("ALTER TABLE users ALTER COLUMN membership_status SET DEFAULT 'new_member'::membership_status_enum");
             }
         } else {
             // MySQL syntax
