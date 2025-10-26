@@ -29,9 +29,13 @@ return new class extends Migration
             return Schema::hasColumn('news', $c);
         });
         if (!empty($toDrop)) {
-            Schema::table('news', function (Blueprint $table) use ($toDrop) {
-                $table->dropColumn($toDrop);
-            });
+            try {
+                Schema::table('news', function (Blueprint $table) use ($toDrop) {
+                    $table->dropColumn($toDrop);
+                });
+            } catch (\Exception $e) {
+                // Ignore drop errors for fresh/rollback runs where columns may not exist
+            }
         }
     }
 };

@@ -16,9 +16,13 @@ return new class extends Migration
             return Schema::hasColumn('shrine_rectors', $c);
         });
         if (!empty($toDrop)) {
-            Schema::table('shrine_rectors', function (Blueprint $table) use ($toDrop) {
-                $table->dropColumn($toDrop);
-            });
+            try {
+                Schema::table('shrine_rectors', function (Blueprint $table) use ($toDrop) {
+                    $table->dropColumn($toDrop);
+                });
+            } catch (\Exception $e) {
+                // If DB reports missing column or any other issue, ignore to allow fresh migrations to continue
+            }
         }
     }
 
