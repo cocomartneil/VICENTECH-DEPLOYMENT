@@ -39,8 +39,12 @@ RUN chown -R www-data:www-data /var/www/html \
 # Copy PHP configuration
 COPY docker/php.ini /usr/local/etc/php/conf.d/app.ini
 
+# Copy and set permissions for entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Expose port
 EXPOSE 8000
 
-# Start command
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Start command using entrypoint
+CMD ["/usr/local/bin/docker-entrypoint.sh"]
