@@ -144,7 +144,9 @@ const AdminMembership = () => {
 
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/sanctum/csrf-cookie`, {
+    // Use Vite env var if present; empty prefix will make this a same-origin relative request.
+    const apiBase = import.meta.env.VITE_API_URL ?? '';
+    fetch(`${apiBase}/sanctum/csrf-cookie`, {
       credentials: 'include'
     });
   }, []);

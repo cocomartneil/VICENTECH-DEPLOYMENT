@@ -5,9 +5,14 @@ import App from './components/App';
 import '../css/adminTheme.css';
 import axios from 'axios';
 
+// Use Vite-provided environment variable when available. Falls back to localhost for
+// local development. When empty, axios will use relative URLs which is safe for
+// same-origin deployments.
+const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
+
 // Set default axios configuration
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+axios.defaults.baseURL = API_BASE;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Accept'] = 'application/json';
 
