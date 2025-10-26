@@ -15,6 +15,7 @@
         "maatwebsite/excel": "^1.1",
         "openai-php/client": "^0.14.0",
         "openai-php/laravel": "*",
+        "s-ichikawa/laravel-sendgrid-driver": "^4.0",
         "sendgrid/sendgrid": "^8.1",
         "tecnickcom/tcpdf": "^6.10"
     },

@@ -161,6 +161,7 @@ return [
 
         // Package Service Providers...
         OpenAI\Laravel\ServiceProvider::class,
+    Sichikawa\LaravelSendgridDriver\SendgridTransportServiceProvider::class,
 
         // Application Service Providers...
         App\Providers\AppServiceProvider::class,
