@@ -21,6 +21,9 @@ echo "Refreshing migration state..."
 php artisan migrate:reset --force || true
 
 echo "Running fresh migrations..."
+echo "Listing migration files present in the container (for debug):"
+ls -la database/migrations || true
+
 php artisan migrate --force --seed
 
 echo "Clearing and caching configuration..."
