@@ -12,7 +12,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Ensure SendGrid transport provider is registered. This guarantees the
+        // 'sendgrid' mailer is available even when package discovery or cached
+        // configs haven't picked up the package provider yet.
+        if (class_exists(\Sichikawa\LaravelSendgridDriver\SendgridTransportServiceProvider::class)) {
+            $this->app->register(\Sichikawa\LaravelSendgridDriver\SendgridTransportServiceProvider::class);
+        }
     }
 
     /**

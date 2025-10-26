@@ -771,6 +771,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
+// Temporary test-mail endpoint (secured by ADMIN_OTP_KEY or APP_DEBUG) to verify SMTP/SendGrid
+Route::post('/debug/test-mail', [\App\Http\Controllers\Utilities\TestMailController::class, 'send']);
+
 // Priest Calendar Routes
 Route::middleware(['auth:sanctum'])->group(function () {
     // Public priest calendar routes (for staff to manage)

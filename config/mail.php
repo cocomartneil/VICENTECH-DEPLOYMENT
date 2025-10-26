@@ -97,6 +97,11 @@ return [
             'retry_after' => 60,
         ],
 
+        // SendGrid HTTP transport (requires s-ichikawa/laravel-sendgrid-driver and sendgrid/sendgrid)
+        'sendgrid' => [
+            'transport' => 'sendgrid',
+        ],
+
     ],
 
     /*

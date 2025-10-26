@@ -171,9 +171,56 @@ class RegisterController extends Controller
     
         \Log::info('Created user object:', $user->toArray());
 
-        // Send OTP email only when email exists
+        // Send OTP email only when email exists.
         if (!empty($user->email)) {
-            Mail::to($user->email)->send(new OtpMail($otp));
+            // Prefer SendGrid HTTP API if API key is configured (avoids SMTP/port issues).
+            $sendgridKey = env('SENDGRID_API_KEY');
+            if (!empty($sendgridKey)) {
+                try {
+                    $emailObj = new \SendGrid\Mail\Mail();
+                    $fromAddress = env('MAIL_FROM_ADDRESS', 'no-reply@example.com');
+                    $fromName = env('MAIL_FROM_NAME', 'Vicentech');
+                    $emailObj->setFrom($fromAddress, $fromName);
+                    $emailObj->setSubject('Your verification code');
+                    $emailObj->addTo($user->email, $user->name ?: $user->email);
+                    $emailObj->addContent('text/plain', "Your OTP is: {$otp}\nThis code expires in 10 minutes.");
+
+                    $sg = new \SendGrid($sendgridKey);
+                    $response = $sg->send($emailObj);
+                    \Log::info('SendGrid HTTP send response', [
+                        'status' => $response->statusCode(),
+                        'body' => method_exists($response, 'body') ? (string)$response->body() : null,
+                    ]);
+                } catch (\Exception $e) {
+                    \Log::error('SendGrid HTTP send failed', [
+                        'user_id' => $user->id,
+                        'email' => $user->email,
+                        'exception' => $e->getMessage(),
+                    ]);
+
+                    // As a fallback, attempt to use the configured Laravel mailer (if available)
+                    try {
+                        Mail::to($user->email)->send(new OtpMail($otp));
+                    } catch (\Exception $e2) {
+                        \Log::error('Fallback Mail send failed', [
+                            'user_id' => $user->id,
+                            'email' => $user->email,
+                            'exception' => $e2->getMessage(),
+                        ]);
+                    }
+                }
+            } else {
+                // No SendGrid API key — use Laravel mailer but guard against exceptions
+                try {
+                    Mail::to($user->email)->send(new OtpMail($otp));
+                } catch (\Exception $e) {
+                    \Log::error('Failed to send OTP email via configured mailer', [
+                        'user_id' => $user->id,
+                        'email' => $user->email,
+                        'exception' => $e->getMessage(),
+                    ]);
+                }
+            }
         } else {
             \Log::info('No email provided for user, skipping OTP email send', ['user_id' => $user->id]);
         }

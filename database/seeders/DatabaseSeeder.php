@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         // Call individual seeders. Add or remove entries as needed.
         $this->call([
+            AdminSeeder::class, // Run admin seeder first
             CertificateTemplateSeeder::class,
             EventRegistrationSeeder::class,
             MassScheduleSeeder::class,
