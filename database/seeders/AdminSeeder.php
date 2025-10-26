@@ -21,7 +21,7 @@ class AdminSeeder extends Seeder
                 'password' => Hash::make(env('ADMIN_PASSWORD', 'admin123')), // Set via ADMIN_PASSWORD env var in production
                 'is_admin' => true,
                 'is_staff' => false,
-                'Sex' => env('ADMIN_GENDER', 'male'),
+                // Use the migration-defined `gender` column (lowercase). Remove incorrect capitalized key 'Sex'.
                 'gender' => env('ADMIN_GENDER', 'male'),
                 'birthdate' => env('ADMIN_BIRTHDATE', '1990-01-01'),
             ]
