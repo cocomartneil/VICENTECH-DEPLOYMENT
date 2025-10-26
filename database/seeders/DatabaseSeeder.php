@@ -3,19 +3,25 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\SacramentType;
 
-class SacramentTypeSeeder extends Seeder
+class DatabaseSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeders.
+     */
+    public function run(): void
     {
-        SacramentType::insert([
-            ['name' => 'Baptism', 'description' => 'The sacrament of initiation into the Christian faith'],
-            ['name' => 'Confirmation', 'description' => 'The sacrament of receiving the Holy Spirit'],
-            ['name' => 'First Holy Communion', 'description' => 'The sacrament of receiving the Body and Blood of Christ'],
-            ['name' => 'Matrimony', 'description' => 'The sacrament of marriage'],
-            ['name' => 'Confession', 'description' => 'The sacrament of reconciliation'],
-            ['name' => 'Anointing of the Sick', 'description' => 'The sacrament of healing'],
+        // Call individual seeders. Add or remove entries as needed.
+        $this->call([
+            CertificateTemplateSeeder::class,
+            EventRegistrationSeeder::class,
+            MassScheduleSeeder::class,
+            ParishRecordSeeder::class,
+            PriestCalendarSeeder::class,
+            SacramentTimeSlotSeeder::class,
+            SacramentTypeSeeder::class,
+            ServerTypeSeeder::class,
+            StaffSeeder::class,
         ]);
     }
 }
