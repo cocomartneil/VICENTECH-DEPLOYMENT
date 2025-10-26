@@ -13,12 +13,15 @@ class StaffSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Staff User',
-            'email' => 'staff@church.com',
-            'password' => Hash::make('staff123'),
-            'is_staff' => true,
-            'is_admin' => false,
-        ]);
+        // idempotent: create the staff user only if the email doesn't exist
+        User::firstOrCreate(
+            ['email' => 'staff@church.com'],
+            [
+                'name' => 'Staff User',
+                'password' => Hash::make('staff123'),
+                'is_staff' => true,
+                'is_admin' => false,
+            ]
+        );
     }
 } 
