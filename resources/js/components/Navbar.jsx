@@ -774,7 +774,7 @@ const Navbar = () => {
 
 
         {/* Desktop menu */}
-        <div className="hidden md:block">
+        <div className="invisible md:visible block">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 relative bg-gray-800 md:bg-transparent rounded-lg md:rounded-none shadow md:shadow-none">
             <li>
               <a
