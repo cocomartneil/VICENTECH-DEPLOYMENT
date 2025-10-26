@@ -1,8 +1,24 @@
 #!/bin/bash
 set -e
 
+echo "Waiting for database to be ready..."
+maxTries=60
+while [ "$maxTries" -gt 0 ]; do
+    if php artisan db:monitor > /dev/null 2>&1; then
+        break
+    fi
+    maxTries=$((maxTries - 1))
+    echo "Waiting for database connection... ($maxTries tries left)"
+    sleep 1
+done
+
+if [ "$maxTries" -le 0 ]; then
+    echo "Could not connect to database"
+    exit 1
+fi
+
 echo "Running database migrations..."
-php artisan migrate --force || echo "Migration failed, but continuing..."
+php artisan migrate --force
 
 echo "Clearing and caching configuration..."
 php artisan config:clear
