@@ -17,8 +17,11 @@ if [ "$maxTries" -le 0 ]; then
     exit 1
 fi
 
-echo "Running database migrations..."
-php artisan migrate --force
+echo "Refreshing migration state..."
+php artisan migrate:reset --force || true
+
+echo "Running fresh migrations..."
+php artisan migrate --force --seed
 
 echo "Clearing and caching configuration..."
 php artisan config:clear
