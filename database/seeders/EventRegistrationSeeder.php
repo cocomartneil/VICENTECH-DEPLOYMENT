@@ -47,7 +47,7 @@ class EventRegistrationSeeder extends Seeder
                         'email' => 'test' . str_pad($registrationId, 4, '0', STR_PAD_LEFT) . '@example.com',
                         'phone' => '091' . rand(10000000, 99999999),
                         'age' => rand(18, 65),
-                        'gender' => rand(0, 1) ? 'Male' : 'Female',
+                        'gender' => rand(0, 1) ? 'male' : 'female',
                         'address' => $this->getRandomAddress(),
                         'emergency_contact_name' => $this->getRandomFirstName() . ' ' . $this->getRandomLastName(),
                         'emergency_contact_phone' => '091' . rand(10000000, 99999999),

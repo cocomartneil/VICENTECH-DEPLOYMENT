@@ -23,7 +23,7 @@ class PriestCalendarSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'is_priest' => true,
                 'phone' => '09123456789',
-                'gender' => 'Male',
+                'gender' => 'male',
                 'birthdate' => '1980-05-15',
                 'address' => 'Church Rectory',
                 'age' => 44
@@ -37,7 +37,7 @@ class PriestCalendarSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'is_priest' => true,
                 'phone' => '09123456790',
-                'gender' => 'Male',
+                'gender' => 'male',
                 'birthdate' => '1975-08-20',
                 'address' => 'Church Rectory',
                 'age' => 49
