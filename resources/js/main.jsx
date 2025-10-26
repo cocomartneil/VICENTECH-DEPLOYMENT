@@ -5,10 +5,11 @@ import App from './components/App';
 import '../css/adminTheme.css';
 import axios from 'axios';
 
-// Use Vite-provided environment variable when available. Falls back to localhost for
-// local development. When empty, axios will use relative URLs which is safe for
-// same-origin deployments.
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
+// Use Vite-provided environment variable when available. For safety in production
+// we default to an empty string so axios will use relative (same-origin) URLs
+// when VITE_API_URL is not set. This prevents accidentally calling localhost
+// from a deployed bundle that was built without the proper env var.
+const API_BASE = import.meta.env.VITE_API_URL ?? '';
 
 // Set default axios configuration
 axios.defaults.withCredentials = true;
