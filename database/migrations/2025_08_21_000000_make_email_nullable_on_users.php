@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use PDO;
 
 return new class extends Migration
 {
@@ -12,8 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        // Use raw statement to avoid requiring doctrine/dbal
-        DB::statement('ALTER TABLE `users` MODIFY `email` VARCHAR(255) NULL');
+        // Make this migration DB-driver aware: MySQL uses MODIFY with backticks,
+        // Postgres uses ALTER COLUMN ... TYPE / DROP NOT NULL.
+        $driver = DB::connection()->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
+        if ($driver === 'pgsql') {
+            DB::statement('ALTER TABLE users ALTER COLUMN email TYPE VARCHAR(255)');
+            DB::statement('ALTER TABLE users ALTER COLUMN email DROP NOT NULL');
+        } else {
+            // MySQL / MariaDB
+            DB::statement('ALTER TABLE `users` MODIFY `email` VARCHAR(255) NULL');
+        }
     }
 
     /**
@@ -23,6 +32,12 @@ return new class extends Migration
      */
     public function down()
     {
-        DB::statement('ALTER TABLE `users` MODIFY `email` VARCHAR(255) NOT NULL');
+        $driver = DB::connection()->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
+        if ($driver === 'pgsql') {
+            DB::statement('ALTER TABLE users ALTER COLUMN email TYPE VARCHAR(255)');
+            DB::statement('ALTER TABLE users ALTER COLUMN email SET NOT NULL');
+        } else {
+            DB::statement('ALTER TABLE `users` MODIFY `email` VARCHAR(255) NOT NULL');
+        }
     }
 };
