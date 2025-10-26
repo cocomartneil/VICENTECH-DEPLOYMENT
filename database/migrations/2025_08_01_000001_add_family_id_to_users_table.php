@@ -17,7 +17,9 @@ return new class extends Migration {
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['family_id']);
-            $table->dropColumn('family_id');
+            if (Schema::hasColumn('users', 'family_id')) {
+                $table->dropColumn('family_id');
+            }
         });
     }
 }; 

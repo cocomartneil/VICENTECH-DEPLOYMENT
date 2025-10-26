@@ -23,8 +23,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
-            $table->dropColumn(['date', 'image_data', 'image_mime']);
+        $cols = ['date', 'image_data', 'image_mime'];
+        $toDrop = array_filter($cols, function ($c) {
+            return Schema::hasColumn('announcements', $c);
         });
+        if (!empty($toDrop)) {
+            Schema::table('announcements', function (Blueprint $table) use ($toDrop) {
+                $table->dropColumn($toDrop);
+            });
+        }
     }
 };

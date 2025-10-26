@@ -24,8 +24,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->dropColumn(['image', 'title', 'date', 'quote']);
+        $cols = ['image', 'title', 'date', 'quote'];
+        $toDrop = array_filter($cols, function ($c) {
+            return Schema::hasColumn('news', $c);
         });
+        if (!empty($toDrop)) {
+            Schema::table('news', function (Blueprint $table) use ($toDrop) {
+                $table->dropColumn($toDrop);
+            });
+        }
     }
 };

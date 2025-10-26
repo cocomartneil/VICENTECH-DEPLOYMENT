@@ -22,8 +22,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('mass_schedules', function (Blueprint $table) {
-            $table->dropColumn(['start_time', 'end_time']);
+        $cols = ['start_time', 'end_time'];
+        $toDrop = array_filter($cols, function ($c) {
+            return Schema::hasColumn('mass_schedules', $c);
         });
+        if (!empty($toDrop)) {
+            Schema::table('mass_schedules', function (Blueprint $table) use ($toDrop) {
+                $table->dropColumn($toDrop);
+            });
+        }
     }
 };

@@ -22,9 +22,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('prayer_requests', function (Blueprint $table) {
-            $table->dropColumn('is_read');
-            $table->dropColumn('title');
+        $cols = ['is_read', 'title'];
+        $toDrop = array_filter($cols, function ($c) {
+            return Schema::hasColumn('prayer_requests', $c);
         });
+        if (!empty($toDrop)) {
+            Schema::table('prayer_requests', function (Blueprint $table) use ($toDrop) {
+                $table->dropColumn($toDrop);
+            });
+        }
     }
 };

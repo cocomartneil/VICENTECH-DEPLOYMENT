@@ -22,8 +22,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['otp', 'otp_expires_at']);
+        $cols = ['otp', 'otp_expires_at'];
+        $toDrop = array_filter($cols, function ($c) {
+            return Schema::hasColumn('users', $c);
         });
+        if (!empty($toDrop)) {
+            Schema::table('users', function (Blueprint $table) use ($toDrop) {
+                $table->dropColumn($toDrop);
+            });
+        }
     }
 };

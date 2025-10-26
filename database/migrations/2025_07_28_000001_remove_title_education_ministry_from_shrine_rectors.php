@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('shrine_rectors', function (Blueprint $table) {
-            $table->dropColumn(['title', 'education', 'ministry_experience']);
+        $cols = ['title', 'education', 'ministry_experience'];
+        $toDrop = array_filter($cols, function ($c) {
+            return Schema::hasColumn('shrine_rectors', $c);
         });
+        if (!empty($toDrop)) {
+            Schema::table('shrine_rectors', function (Blueprint $table) use ($toDrop) {
+                $table->dropColumn($toDrop);
+            });
+        }
     }
 
     /**

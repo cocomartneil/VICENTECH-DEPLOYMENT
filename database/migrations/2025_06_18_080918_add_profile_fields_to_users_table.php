@@ -28,7 +28,13 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // $table->dropColumn(['phone', 'gender', 'birthdate', 'address', 'age', 'profile_image']);
-            $table->dropColumn(['phone', 'gender', 'birthdate', 'address', 'age']);
+            $cols = ['phone', 'gender', 'birthdate', 'address', 'age'];
+            $toDrop = array_filter($cols, function ($c) {
+                return Schema::hasColumn('users', $c);
+            });
+            if (!empty($toDrop)) {
+                $table->dropColumn($toDrop);
+            }
         });
     }
 };

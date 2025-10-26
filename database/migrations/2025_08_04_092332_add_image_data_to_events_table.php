@@ -27,12 +27,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            if (Schema::hasColumn('events', 'image_data')) {
-                $table->dropColumn('image_data');
-            }
-            if (Schema::hasColumn('events', 'image_mime')) {
-                $table->dropColumn('image_mime');
-            }
+                if (Schema::hasColumn('events', 'image_data')) {
+                    $table->dropColumn('image_data');
+                }
+                if (Schema::hasColumn('events', 'image_mime')) {
+                    $table->dropColumn('image_mime');
+                }
         });
     }
 };

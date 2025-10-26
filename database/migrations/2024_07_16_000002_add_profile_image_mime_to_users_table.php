@@ -14,8 +14,10 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('profile_image_mime');
-        });
+        if (Schema::hasColumn('users', 'profile_image_mime')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('profile_image_mime');
+            });
+        }
     }
 }; 
