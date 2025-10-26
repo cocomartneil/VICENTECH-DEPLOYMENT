@@ -156,7 +156,10 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', 'localhost'),
+    // Default to null so Laravel will use the request host when SESSION_DOMAIN
+    // is not explicitly set. Using 'localhost' here caused session cookies to
+    // be scoped incorrectly in production (leading to CSRF token mismatches).
+    'domain' => env('SESSION_DOMAIN', null),
 
     /*
     |--------------------------------------------------------------------------
