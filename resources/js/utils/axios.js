@@ -64,8 +64,10 @@ api.interceptors.request.use(async config => {
     return Promise.reject(error);
 });
 
-// Create an instance for auth routes
+// Create an instance for auth routes using the same base as API
 export const auth = axios.create({
+    // Use root-relative URLs to avoid CORS/cookie issues on same-origin deployments
+    baseURL: '/',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
