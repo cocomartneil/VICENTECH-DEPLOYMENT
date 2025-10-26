@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use PDO;
 
 return new class extends Migration
 {
@@ -19,7 +18,7 @@ return new class extends Migration
         // resilient in different runtime environments.
         $pdoDriver = null;
         try {
-            $pdoDriver = DB::connection()->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
+            $pdoDriver = DB::connection()->getPdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
         } catch (\Throwable $e) {
             // ignore — we'll fallback to config/env below
         }
@@ -54,7 +53,7 @@ return new class extends Migration
     {
         $pdoDriver = null;
         try {
-            $pdoDriver = DB::connection()->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
+            $pdoDriver = DB::connection()->getPdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
         } catch (\Throwable $e) {
             // ignore
         }
